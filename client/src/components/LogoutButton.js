@@ -1,9 +1,9 @@
 import React from 'react'
 import {useAuth0} from '@auth0/auth0-react'
+import Post from './Post'
 
 const LogoutButton = () => {
     const { logout, user } = useAuth0()
-
   return (
     <>
         <div className='header'>
@@ -25,25 +25,7 @@ const LogoutButton = () => {
                     <button>Post</button>
                 </div>
                 <div className='posts'>
-                    <div className='post'>
-                        <div className='post-header'>
-                            <img src={user.picture} alt="" />
-                            <div className='post-header-info'>
-                                <h5>{user.nickname}</h5>
-                                <p className='post-header-info-time'>{Date.now()}</p>
-                            </div>
-                        </div>
-                        <div className='post-main'>
-                            <img src={'https://w0.peakpx.com/wallpaper/945/890/HD-wallpaper-bmw-m4-car-coupe-f82-modified-orange-tuning-vehicle.jpg'} alt="" />
-                        </div>
-                        <div className='post-footer'>
-                            <p>like</p>
-                            <p>Comment</p>
-                            <div className='comment-section'>
-                                <input type="text" placeholder='Comment...'/>
-                            </div>
-                        </div>
-                    </div>
+                    <Post user={user}/>
                 </div>
             </div>
             <div className='right-section'>

@@ -62,8 +62,8 @@ body{
     display: flex;
     margin: 0 auto;
     height: 100%;
-    width: 80%;
-    background: #fff;
+    width: 70%;
+    background: #ececec;
     position: relative;
     top: 60px;
 }
@@ -80,6 +80,7 @@ body{
     border: 1px solid blue;
 }
 .add-post{
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -88,7 +89,6 @@ body{
     height: 100%;
     background: #fff;
     position: relative;
-    border: 1px solid #e0e0e0;
     padding: 10px;
 }
 .add-post p{
@@ -122,21 +122,14 @@ body{
     align-items: center;
     width: 100%;
     height: 100%;
-    background: #fff;
     position: relative;
-    border: 1px solid #e0e0e0;
-    padding: 10px;
 }
 .post{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 30px;
     width: 100%;
     height: 100%;
     background: #fff;
     position: relative;
-    border: 1px solid #e0e0e0;
 }
 .post-header{
     display: flex;
@@ -171,4 +164,56 @@ body{
 .post-main img{
     width: 100%;
     height: 100%;
+}
+.post-footer{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.interaction-buttons{
+    margin-bottom: 10px;
+    padding: 0 10px;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgb(201, 201, 201);
+    border-bottom: 1px solid rgb(201, 201, 201);
+}
+.interaction-buttons button{
+    cursor: pointer;
+    background: none;
+    width: 100%;
+    padding: 7px 25px;
+    border: none;
+    color: rgb(70, 70, 70);
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 3px 5px;
+}
+.interaction-buttons button:hover{
+    background-color: rgb(235, 235, 235);
+}
+.comment-section{
+    width: 100%;
+    height: 50%;
+    display: flex;
+}
+.comment-section img{
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+}
+.comment-section input{
+    margin: 0 10px;
+    width: 100%;
+    border: none;
+    border-radius: 25px;
+    padding: 0 10px;
+    background-color: rgb(235, 235, 235);
+    outline: none;
 }
