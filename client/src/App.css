@@ -173,6 +173,11 @@ body{
     height: 100%;
     position: relative;
 }
+.interaction-numbers{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
 .interaction-buttons{
     margin-bottom: 10px;
     padding: 0 10px;
@@ -216,4 +221,7 @@ body{
     padding: 0 10px;
     background-color: rgb(235, 235, 235);
     outline: none;
+}
+.interaction-buttons .liked{
+    color: rgb(38, 38, 255);
 }

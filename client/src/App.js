@@ -5,17 +5,13 @@ import LogoutButton from './components/LogoutButton';
 import Profil from './components/Profil';
 
 function App() {
-  const {isLoading, isAuthenticated} = useAuth0()
+  const { isLoading, isAuthenticated } = useAuth0();
 
-  if(isLoading) return <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
-      {!isAuthenticated ? 
-        <LoginButton /> 
-      :
-        <LogoutButton />
-      }
+      {!isAuthenticated ? <LoginButton /> : <LogoutButton />}
       {/* <Profil /> */}
     </>
   );

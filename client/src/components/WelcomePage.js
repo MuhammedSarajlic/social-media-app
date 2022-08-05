@@ -1,13 +1,13 @@
-import React from 'react'
-import LoginButton from './LoginButton'
+import React from "react";
+import LoginButton from "./LoginButton";
 
-const WelcomePage = ({isAuthentificated, setIsAuthentificated}) => {
+const WelcomePage = ({ isAuthentificated, setIsAuthentificated }) => {
   return (
     <>
-        <p>Welcome on our Social Media App</p>
-        <LoginButton auth={isAuthentificated} setAuth={setIsAuthentificated}/>
+      <p>Welcome on our Social Media App</p>
+      <LoginButton auth={isAuthentificated} setAuth={setIsAuthentificated} />
     </>
-  )
-}
+  );
+};
 
-export default WelcomePage
+export default WelcomePage;
