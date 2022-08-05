@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
 const Post = ({ user }) => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(false)
   const like = () => {
-    setLiked(!liked);
-  };
+    setLiked(!liked)
+  }
 
   return (
     <>
@@ -15,6 +15,9 @@ const Post = ({ user }) => {
             <h5>{user.nickname}</h5>
             <p className='post-header-info-time'>{Date().slice(16, 21)}</p>
           </div>
+        </div>
+        <div className='post-header-desc'>
+          <p>Ovo je description posta</p>
         </div>
         <div className='post-main'>
           <img
@@ -43,7 +46,7 @@ const Post = ({ user }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Post;
+export default Post
