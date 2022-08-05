@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import Post from './Post'
 import { storage, db } from './Firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, getDocs } from 'firebase/firestore'
 
 const LogoutButton = () => {
   const { logout, user } = useAuth0()
@@ -29,9 +29,7 @@ const LogoutButton = () => {
     })
   }
 
-  useEffect(() => {
-    console.log('Effect Uplaod', desc, imageUrl)
-  }, [imageUrl])
+  useEffect(() => {}, [])
 
   return (
     <>
