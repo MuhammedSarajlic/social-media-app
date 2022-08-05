@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const Post = ({ user }) => {
+const Post = ({ user, post }) => {
   const [liked, setLiked] = useState(false)
   const like = () => {
     setLiked(!liked)
@@ -17,15 +17,11 @@ const Post = ({ user }) => {
           </div>
         </div>
         <div className='post-header-desc'>
-          <p>Ovo je description posta</p>
+          {/* <p>Ovo je description posta</p> */}
+          <p>{post.description}</p>
         </div>
         <div className='post-main'>
-          <img
-            src={
-              'https://w0.peakpx.com/wallpaper/945/890/HD-wallpaper-bmw-m4-car-coupe-f82-modified-orange-tuning-vehicle.jpg'
-            }
-            alt=''
-          />
+          <img src={post.image} alt='' />
         </div>
         <div className='post-footer'>
           <div className='interaction-numbers'>

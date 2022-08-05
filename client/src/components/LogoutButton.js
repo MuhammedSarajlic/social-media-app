@@ -10,6 +10,7 @@ const LogoutButton = () => {
 
   const [imageUrl, setImageUrl] = useState(null)
   const [desc, setDesc] = useState('')
+  const [postList, setPostList] = useState([])
 
   const collectionRef = collection(db, 'posts')
 
@@ -29,7 +30,14 @@ const LogoutButton = () => {
     })
   }
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const getPosts = async () => {
+      const data = await getDocs(collectionRef)
+      setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }
+    getPosts()
+    console.log(postList)
+  }, [])
 
   return (
     <>
@@ -58,9 +66,9 @@ const LogoutButton = () => {
             </form>
           </div>
           <div className='posts'>
-            {/* {arr.map(() => ( */}
-            <Post user={user} />
-            {/* ))} */}
+            {postList.map((post) => (
+              <Post key={post.id} user={user} post={post} />
+            ))}
           </div>
         </div>
         <div className='right-section'>
