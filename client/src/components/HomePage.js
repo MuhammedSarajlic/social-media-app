@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import Post from './Post'
 import { storage, db } from './Firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { addDoc, collection, getDocs } from 'firebase/firestore'
+import { addDoc, collection, getDocs, serverTimestamp, orderBy, query } from 'firebase/firestore'
 
 const LogoutButton = () => {
   const { logout, user } = useAuth0()
@@ -12,7 +12,10 @@ const LogoutButton = () => {
   const [desc, setDesc] = useState('')
   const [postList, setPostList] = useState([])
 
-  const collectionRef = collection(db, 'posts')
+  const postsCollectionRef = collection(db, 'posts')
+  const usersCollectionRef = collection(db, 'users')
+
+  const addUser = () => {}
 
   const onFileChange = async (e) => {
     const image = e.target.files[0]
@@ -23,20 +26,32 @@ const LogoutButton = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    addDoc(collectionRef, {
+    addDoc(postsCollectionRef, {
+      createdAt: serverTimestamp(),
       description: desc,
       image: imageUrl,
       user_ID: user.sub,
+      username: user.nickname,
+      user_avatar: user.picture,
     })
+    // setPostList((prev) => [
+    //   ...prev,
+    //   {
+    //     createdAt: datetime,
+    //     description: desc,
+    //     image: imageUrl,
+    //     user_ID: user.sub,
+    //   },
+    // ])
+    setDesc('')
   }
 
   useEffect(() => {
     const getPosts = async () => {
-      const data = await getDocs(collectionRef)
+      const data = await getDocs(query(postsCollectionRef, orderBy('createdAt', 'desc')))
       setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     }
     getPosts()
-    console.log(postList)
   }, [])
 
   return (
@@ -57,6 +72,7 @@ const LogoutButton = () => {
             <form onSubmit={onSubmit}>
               <input
                 type='text'
+                value={desc}
                 name='description'
                 placeholder='Say something...'
                 onChange={(e) => setDesc(e.target.value)}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Timestamp from 'react-timestamp'
 
 const Post = ({ user, post }) => {
   const [liked, setLiked] = useState(false)
@@ -6,18 +7,22 @@ const Post = ({ user, post }) => {
     setLiked(!liked)
   }
 
+  const date = new Date(post.createdAt.seconds * 1000)
+
   return (
     <>
       <div className='post'>
         <div className='post-header'>
-          <img src={user.picture} alt='' />
+          <img src={post.user_avatar} alt='' />
           <div className='post-header-info'>
-            <h5>{user.nickname}</h5>
-            <p className='post-header-info-time'>{Date().slice(16, 21)}</p>
+            <h5>{post.username}</h5>
+            {/* <Timestamp date={date} options={{ twentyFourHour: true }} /> */}
+            <p className='post-header-info-time'>
+              <Timestamp relative date={date} />
+            </p>
           </div>
         </div>
         <div className='post-header-desc'>
-          {/* <p>Ovo je description posta</p> */}
           <p>{post.description}</p>
         </div>
         <div className='post-main'>
