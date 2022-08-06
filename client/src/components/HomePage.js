@@ -4,6 +4,7 @@ import Post from './Post'
 import { storage, db } from './Firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { addDoc, collection, getDocs, serverTimestamp, orderBy, query } from 'firebase/firestore'
+import { v4 } from 'uuid'
 
 const LogoutButton = () => {
   const { logout, user } = useAuth0()
@@ -13,20 +14,28 @@ const LogoutButton = () => {
   const [postList, setPostList] = useState([])
 
   const postsCollectionRef = collection(db, 'posts')
-  const usersCollectionRef = collection(db, 'users')
+  // const usersCollectionRef = collection(db, 'users')
 
-  const addUser = () => {}
+  // const addUser = () => {}
+
+  const getPosts = async () => {
+    const data = await getDocs(query(postsCollectionRef, orderBy('createdAt', 'desc')))
+    setPostList(data.docs.map((doc) => ({ ...doc.data() })))
+  }
 
   const onFileChange = async (e) => {
     const image = e.target.files[0]
-    const imageRef = ref(storage, `images/${image.name}${user.sub}`)
+    const imageRef = ref(storage, `images/${image.name}${v4()}`)
     await uploadBytes(imageRef, image)
     setImageUrl(await getDownloadURL(imageRef))
   }
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    addDoc(postsCollectionRef, {
+    if (imageUrl === null && desc === '') return
+    let id = v4()
+    await addDoc(postsCollectionRef, {
+      id: id,
       createdAt: serverTimestamp(),
       description: desc,
       image: imageUrl,
@@ -34,23 +43,11 @@ const LogoutButton = () => {
       username: user.nickname,
       user_avatar: user.picture,
     })
-    // setPostList((prev) => [
-    //   ...prev,
-    //   {
-    //     createdAt: datetime,
-    //     description: desc,
-    //     image: imageUrl,
-    //     user_ID: user.sub,
-    //   },
-    // ])
+    getPosts()
     setDesc('')
   }
 
   useEffect(() => {
-    const getPosts = async () => {
-      const data = await getDocs(query(postsCollectionRef, orderBy('createdAt', 'desc')))
-      setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-    }
     getPosts()
   }, [])
 
@@ -83,7 +80,7 @@ const LogoutButton = () => {
           </div>
           <div className='posts'>
             {postList.map((post) => (
-              <Post key={post.id} user={user} post={post} />
+              <Post key={post.id} user={user} post={post} imageUrl={post.image} desc={post.description} />
             ))}
           </div>
         </div>

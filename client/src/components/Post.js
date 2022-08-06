@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Timestamp from 'react-timestamp'
 
-const Post = ({ user, post }) => {
+const Post = ({ user, post, imageUrl, description }) => {
   const [liked, setLiked] = useState(false)
+  const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(false)
   const like = () => {
     setLiked(!liked)
   }
+
+  if (description === '') setIsDescriptionEmpty(true)
 
   const date = new Date(post.createdAt.seconds * 1000)
 
@@ -22,12 +25,16 @@ const Post = ({ user, post }) => {
             </p>
           </div>
         </div>
-        <div className='post-header-desc'>
-          <p>{post.description}</p>
-        </div>
-        <div className='post-main'>
-          <img src={post.image} alt='' />
-        </div>
+        {!isDescriptionEmpty && (
+          <div className='post-header-desc'>
+            <p>{post.description}</p>
+          </div>
+        )}
+        {imageUrl && (
+          <div className='post-main'>
+            <img src={post.image} alt='' />
+          </div>
+        )}
         <div className='post-footer'>
           <div className='interaction-numbers'>
             <p>1 Likes</p>
