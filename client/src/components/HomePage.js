@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import Post from './Post'
 import { storage, db } from './Firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { addDoc, collection, getDocs, serverTimestamp, orderBy, query } from 'firebase/firestore'
+import { addDoc, collection, getDocs, serverTimestamp, orderBy, query, doc, deleteDoc } from 'firebase/firestore'
 import { v4 } from 'uuid'
 
 const LogoutButton = () => {
@@ -12,15 +12,20 @@ const LogoutButton = () => {
   const [imageUrl, setImageUrl] = useState(null)
   const [desc, setDesc] = useState('')
   const [postList, setPostList] = useState([])
+  const [postID, setPostID] = useState('')
 
   const postsCollectionRef = collection(db, 'posts')
-  // const usersCollectionRef = collection(db, 'users')
 
-  // const addUser = () => {}
+  const del = () => {
+    const docRef = doc(db, 'posts', postID)
+    deleteDoc(docRef).then(() => {
+      console.log('Entire Document has been deleted successfully.')
+    })
+  }
 
   const getPosts = async () => {
     const data = await getDocs(query(postsCollectionRef, orderBy('createdAt', 'desc')))
-    setPostList(data.docs.map((doc) => ({ ...doc.data() })))
+    setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
   }
 
   const onFileChange = async (e) => {
@@ -35,7 +40,7 @@ const LogoutButton = () => {
     if (imageUrl === null && desc === '') return
     let id = v4()
     await addDoc(postsCollectionRef, {
-      id: id,
+      // id: id,
       createdAt: serverTimestamp(),
       description: desc,
       image: imageUrl,
@@ -49,6 +54,7 @@ const LogoutButton = () => {
 
   useEffect(() => {
     getPosts()
+    console.log(postList)
   }, [])
 
   return (
@@ -58,7 +64,7 @@ const LogoutButton = () => {
         <input type='text' placeholder='Search...' />
         <div className='profile-options'>
           <p>{user.nickname}</p>
-          <img src={user.picture} alt={user.name} />
+          <img src={user.picture} alt='' />
           <button onClick={() => logout()}>Log Out</button>
         </div>
       </div>
@@ -66,6 +72,8 @@ const LogoutButton = () => {
         <div className='left-section'>
           <div className='add-post'>
             <p>Add Post</p>
+            <input value={postID} type='text' placeholder='id...' onChange={(e) => setPostID(e.target.value)} />
+            <button onClick={del}>Delete</button>
             <form onSubmit={onSubmit}>
               <input
                 type='text'
