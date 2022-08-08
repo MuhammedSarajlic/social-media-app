@@ -1,13 +1,13 @@
-import { doc, deleteDoc } from 'firebase/firestore'
-import { ref } from 'firebase/storage'
+import { doc, deleteDoc, getDocs, query, orderBy, collection } from 'firebase/firestore'
 import React, { useState } from 'react'
 import Timestamp from 'react-timestamp'
-import { db, storage } from './Firebase'
-// import { db } from './Firebase'
+import { db } from './Firebase'
 
-const Post = ({ user, post, imageUrl, description }) => {
+const Post = ({ user, post, imageUrl, description, setPostList }) => {
   const [liked, setLiked] = useState(false)
   const [isDescriptionEmpty, setIsDescriptionEmpty] = useState(false)
+  const [isOpened, setIsOpened] = useState(false)
+
   const like = () => {
     setLiked(!liked)
   }
@@ -16,9 +16,14 @@ const Post = ({ user, post, imageUrl, description }) => {
 
   const date = new Date(post.createdAt.seconds * 1000)
 
-  const getId = () => {
-    console.log(post.id)
-    //delete post
+  const postsCollectionRef = collection(db, 'posts')
+
+  const getPosts = async () => {
+    const data = await getDocs(query(postsCollectionRef, orderBy('createdAt', 'desc')))
+    setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  }
+
+  const deletePost = () => {
     const docRef = doc(db, 'posts', post.id)
     console.log(docRef)
     deleteDoc(docRef)
@@ -28,7 +33,11 @@ const Post = ({ user, post, imageUrl, description }) => {
       .catch((error) => {
         console.log(error)
       })
-    // getPosts()
+    getPosts()
+  }
+
+  const handleClick = () => {
+    setIsOpened(!isOpened)
   }
 
   return (
@@ -47,12 +56,26 @@ const Post = ({ user, post, imageUrl, description }) => {
           </div>
 
           {post.user_ID === user.sub ? (
-            <button className='edit' onClick={getId}>
-              <div className='dot'></div>
-              <div className='dot'></div>
-              <div className='dot'></div>
-            </button>
+            <div className='options-container'>
+              <button className='edit' onClick={handleClick}>
+                <div className='dot'></div>
+                <div className='dot'></div>
+                <div className='dot'></div>
+              </button>
+              <div className={isOpened ? 'opened' : 'closed'}>
+                <button>
+                  <img src='https://img.icons8.com/ios-glyphs/344/edit--v1.png' alt='' /> Edit
+                </button>
+                <button onClick={deletePost}>
+                  <img src='https://img.icons8.com/ios-glyphs/344/filled-trash.png' alt='' /> Delete
+                </button>
+              </div>
+            </div>
           ) : null}
+          {/* <div className='options'>
+            <button onClick={deletePost}>Delete</button>
+            <button>Edit</button>
+          </div> */}
         </div>
         {!isDescriptionEmpty && (
           <div className='post-header-desc'>

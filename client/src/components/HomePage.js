@@ -88,7 +88,14 @@ const LogoutButton = () => {
           </div>
           <div className='posts'>
             {postList.map((post) => (
-              <Post key={post.id} user={user} post={post} imageUrl={post.image} desc={post.description} />
+              <Post
+                key={post.id}
+                user={user}
+                post={post}
+                imageUrl={post.image}
+                desc={post.description}
+                setPostList={setPostList}
+              />
             ))}
           </div>
         </div>
